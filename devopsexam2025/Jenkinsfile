@@ -8,6 +8,15 @@ pipeline {
             }
         }
 
+        stage('Create Lambda Zip') {
+            steps {
+                script {
+                    // Create the lambda.zip file from the Lambda source code
+                    sh 'zip -r lambda.zip ./devopsexam2025/lambda-code/*'
+                }
+            }
+        }
+
         stage('TF Init') {
             steps {
                 script {
@@ -47,7 +56,5 @@ pipeline {
                 }
             }
         }
-        
-        // Add any other stages for your Lambda invocation or other steps...
     }
 }
