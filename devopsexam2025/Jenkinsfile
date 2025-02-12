@@ -19,7 +19,7 @@ pipeline {
                     sh 'ls -l devopsexam2025'
                     
                     // Create the zip file from lambda_function.py in devopsexam2025 subfolder
-                    sh 'zip -r lambda.zip devopsexam2025/lambda_function.py'
+                    sh 'zip -r devopsexam2025/lambda.zip devopsexam2025/lambda_function.py'
                 }
             }
         }
