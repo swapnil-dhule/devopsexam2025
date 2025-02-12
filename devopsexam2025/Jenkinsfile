@@ -1,32 +1,31 @@
 pipeline {
     agent any
     
+    environment {
+        AWS_REGION = 'us-east-1'  // Adjust your region if necessary
+    }
+
     stages {
-        stage('Checkout SCM') {
+        stage('Declarative: Checkout SCM') {
             steps {
                 checkout scm
             }
         }
-
+        
         stage('Create Lambda Zip') {
             steps {
                 script {
-                    // Check if the lambda-code directory exists before zipping
-                    def lambdaCodeDir = './devopsexam2025/lambda-code'
-                    if (fileExists(lambdaCodeDir)) {
-                        // Zip the Lambda function code if the directory exists
-                        sh "zip -r lambda.zip ${lambdaCodeDir}/*"
-                    } else {
-                        error "Lambda code directory does not exist at: ${lambdaCodeDir}"
-                    }
+                    // Create the zip file from lambda_function.py
+                    sh 'zip -r lambda.zip ./lambda_function.py'
                 }
             }
         }
-
+        
         stage('TF Init') {
             steps {
-                script {
-                    dir('devopsexam2025') {
+                dir('devopsexam2025') {
+                    script {
+                        // Initialize Terraform
                         sh 'terraform init'
                     }
                 }
@@ -35,8 +34,9 @@ pipeline {
 
         stage('TF Validate') {
             steps {
-                script {
-                    dir('devopsexam2025') {
+                dir('devopsexam2025') {
+                    script {
+                        // Validate Terraform configurations
                         sh 'terraform validate'
                     }
                 }
@@ -45,8 +45,9 @@ pipeline {
 
         stage('TF Plan') {
             steps {
-                script {
-                    dir('devopsexam2025') {
+                dir('devopsexam2025') {
+                    script {
+                        // Run Terraform plan to see what changes will be made
                         sh 'terraform plan'
                     }
                 }
@@ -55,8 +56,9 @@ pipeline {
 
         stage('TF Apply') {
             steps {
-                script {
-                    dir('devopsexam2025') {
+                dir('devopsexam2025') {
+                    script {
+                        // Apply the Terraform changes
                         sh 'terraform apply -auto-approve'
                     }
                 }
