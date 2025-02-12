@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        AWS_REGION = 'us-east-1'  // Adjust your region if necessary
+        AWS_REGION = 'ap-south-1'  // Adjust your region if necessary
     }
 
     stages {
@@ -11,16 +11,19 @@ pipeline {
                 checkout scm
             }
         }
-        
+
         stage('Create Lambda Zip') {
             steps {
                 script {
-                    // Create the zip file from lambda_function.py
-                    sh 'zip -r lambda.zip ./lambda_function.py'
+                    // List files inside the devopsexam2025 folder to confirm file exists
+                    sh 'ls -l devopsexam2025'
+                    
+                    // Create the zip file from lambda_function.py in devopsexam2025 subfolder
+                    sh 'zip -r lambda.zip devopsexam2025/lambda_function.py'
                 }
             }
         }
-        
+
         stage('TF Init') {
             steps {
                 dir('devopsexam2025') {
