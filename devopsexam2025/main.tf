@@ -66,7 +66,7 @@ resource "aws_security_group" "lambda_sg" {
 
 # Create the Lambda function
 resource "aws_lambda_function" "lambda" {
-  function_name = "devops-exam-lambda"
+  function_name = "devops-exam-lambda-swapnil"
   role          = data.aws_iam_role.lambda.arn
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.8"
